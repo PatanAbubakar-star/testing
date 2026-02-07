@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+@await Html.PartialAsync("_StudentIndexStyles")
+
+<div class="srp-container">
+
+    
+    <form id="antiForgeryForm" class="d-none">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <!-- Tabs -->
+    <div class="srp-tabs-wrap">
+        <div class="srp-tabs">
+            <button type="button" id="tabAll" class="srp-tab-btn active">All Courses</button>
+            <button type="button" id="tabSelected" class="srp-tab-btn">Selected Courses</button>
+        </div>
+    </div>
+
+
+    <!-- Content holder (partials will load here) -->
+    <div id="tabContent">
+        <div class="srp-loading">Loading...</div>
+    </div>
+
+</div>
+
+<!-- Modal placeholder  -->
+<div id="globalModal"></div>
+
+
+@await Html.PartialAsync("_StudentIndexScripts")

@@ -1,0 +1,27 @@
+﻿<div class="bg">
+    <div class="overlay">
+        <div>
+            <div class="brand text-center text-white mb-4">
+                <h2>SRP</h2>
+                <p>Sign up for full access</p>
+            </div>
+
+            <div class="auth-card">
+
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="loginTabBtn">Log In</div>
+                    <div class="auth-tab" id="registerTabBtn">Sign Up</div>
+                </div>
+
+                <div id="loginTab">
+                    @await Html.PartialAsync("_LoginForm")
+                </div>
+
+                <div id="registerTab" class="d-none">
+                    @await Html.PartialAsync("_RegisterForm")
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

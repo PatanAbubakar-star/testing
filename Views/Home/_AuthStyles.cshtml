@@ -1,0 +1,83 @@
+﻿<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: "Montserrat", sans-serif;
+    }
+
+    .bg {
+        background: url('./images/landing-bg.jpg') center/cover no-repeat;
+        height: 100vh;
+    }
+
+    .overlay {
+        height: 100%;
+        backdrop-filter: blur(12px);
+        background: rgba(0,0,0,0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-card {
+        width: 420px;
+        background: #fff;
+        border-radius: 18px;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 25px 60px rgba(0,0,0,.25);
+    }
+
+    /* Tabs */
+    .auth-tabs {
+        display: flex;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .auth-tab {
+        flex: 1;
+        text-align: center;
+        padding-bottom: .75rem;
+        cursor: pointer;
+        font-weight: 600;
+        color: #aaa;
+        border-bottom: 2px solid transparent;
+    }
+
+        .auth-tab.active {
+            color: #000;
+            border-bottom: 2px solid #4caf50;
+        }
+
+    /* Inputs */
+    .form-control {
+        border-radius: 999px;
+        padding: .75rem 1.25rem;
+        background: #f7f7f7;
+        border: 1px solid #ddd;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #4caf50;
+     }
+
+    /* Button */
+    .btn-primary {
+        border-radius: 999px;
+        padding: .75rem;
+        font-weight: 600;
+        background-color: #1e73ff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #155edb;
+    }
+
+    .brand {
+        text-align: center;
+        color: #fff;
+        margin-bottom: 1.5rem;
+    }
+</style>

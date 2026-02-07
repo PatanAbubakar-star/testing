@@ -1,0 +1,78 @@
+﻿<style>
+    body{
+        background-color: #f5f7fb;
+    }
+    .srp-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #f5f7fb;
+    }
+
+    
+    .srp-tabs-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+        
+
+    .srp-tabs {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+            min-width: 250px;
+        
+        display: inline-flex;
+        box-shadow: 0 4px 18px rgba(0,0,0,.03);
+        position: relative;
+    }
+
+    .srp-tab-btn {
+        min-width: 250px;
+        padding: 10px 20px;
+        border: 0;
+        background: transparent;
+        font-weight: 600;
+        color: #6b7280;
+        position: relative;
+        transition: all 0.2s ease;
+        border-radius: 2px; 
+    }
+
+        .srp-tab-btn.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+            /* The little triangle */
+            .srp-tab-btn.active::after {
+                content: "";
+                position: absolute;
+                bottom: -10px; 
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 10px solid #0d6efd;
+                z-index: 5;
+            }
+
+    /* Loading state */
+    .srp-loading {
+        padding: 50px 0;
+        text-align: center;
+        color: #6b7280;
+    }
+
+    /* Modal polish */
+    .modal-content {
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 8px 28px rgba(0,0,0,.08);
+    }
+
+    .modal-header, .modal-footer {
+        border: 0;
+    }
+</style>

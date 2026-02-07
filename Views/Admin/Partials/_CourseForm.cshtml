@@ -1,0 +1,71 @@
+﻿@model SMSAssignment.Models.Course
+
+@{
+    bool isEdit = Model != null && Model.CourseId > 0;
+}
+
+<div class="admin-card-section">
+
+    <!-- Title -->
+    <h3 class="admin-card-title mb-3 fw-bold">
+        @(isEdit ? "Edit Course" : "Create Course")
+    </h3>
+
+    <form id="courseForm" novalidate>
+        @Html.AntiForgeryToken()
+
+        <!-- HIDDEN ID -->
+        <input type="hidden" asp-for="CourseId" />
+
+        <div class="row g-4">
+
+            <!-- COURSE NAME -->
+            <div class="col-12 col-md-6">
+                <label class="admin-label">Course Name</label>
+                <input asp-for="CourseName"
+                       class="form-control admin-input"
+                       placeholder="Enter the Course Name" />
+            </div>
+
+            <!-- NO OF DAYS -->
+            <div class="col-12 col-md-6">
+                <label class="admin-label">No of Days</label>
+                <input asp-for="NoOfDays"
+                       class="form-control admin-input"
+                       placeholder="No of days in week"
+                       type="number"
+                       min="1" />
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="col-12">
+                <label class="admin-label">Course Description</label>
+                <textarea asp-for="Description"
+                          class="form-control admin-input"
+                          rows="4"
+                          placeholder="Enter Course Description"></textarea>
+            </div>
+
+        </div>
+
+        <!-- MESSAGE + SAVE BUTTON  -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+
+            <div class="w-100">
+                <!-- MESSAGE -->
+                <div id="courseMessage" class="small d-none"></div>
+            </div>
+            
+
+            <!-- SAVE COURSE  -->
+            <button type="button"
+                    id="saveCourseBtn"
+                    class="btn btn-primary admin-btn w-25">
+                Save Course
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

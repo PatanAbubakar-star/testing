@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SMSAssignment.Models.CourseSchedule>
+
+<div class="admin-card admin-card-section">
+
+    <div class="admin-card-head mb-2">
+        <h3 class="admin-card-title mb-0">Schedule List</h3>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-muted mt-3">
+            No schedules added yet.
+        </div>
+    }
+    else
+    {
+        <div class="admin-table-scroll mt-3">
+            <table class="table table-hover align-middle mb-0 admin-table">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">DATE</th>
+                        <th>START TIME</th>
+                        <th>END TIME</th>
+                        <th class="text-center">ACTION</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        <!-- In your _SchedulesTable partial -->
+                        <tr id="schedule-row-@s.CourseScheduleId">
+                            <td class="ps-3">@s.Date.ToString("dd/MM/yyyy")</td>
+                            <td>@s.StartTime.ToString("hh:mm tt")</td>
+                            <td>@s.EndTime.ToString("hh:mm tt")</td>
+                            <td class="text-center">
+                                <button type="button"
+                                        class="admin-icon-btn delete"
+                                        onclick="deleteSchedule(@s.CourseScheduleId)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+
+

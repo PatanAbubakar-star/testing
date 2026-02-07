@@ -1,0 +1,50 @@
+﻿<form id="loginForm"
+      method="post"
+      asp-controller="Auth"
+      asp-action="Login">
+
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label>Username</label>
+        <input name="Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <input name="Password" type="password" class="form-control" />
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="RememberMe" value="true">
+            <label class="form-check-label">Keep me LoggedIn</label>
+        </div>
+
+        <a href="javascript:void(0)" class="text-decoration-none text-black">
+            Forget Password?
+        </a>
+    </div>
+
+    <div class="text-danger small mb-2" id="loginError"></div>
+
+    <button class="btn btn-primary w-100" id="loginBtn">
+        LOG IN
+    </button>
+
+    <br /><br />
+
+    
+    
+
+    <p class="text-center">
+        Don't have an account?
+        <a href="javascript:void(0)"
+           class="text-decoration-none fw-bold"
+           onclick="registerBtnTab.click()">
+            Sign Up
+        </a>
+    </p>
+
+
+</form>

@@ -1,0 +1,199 @@
+﻿<script>
+
+
+    //URLs
+    const allCoursesUrl = '@Url.Action("AllCourses", "Student")';
+    const selectedCoursesUrl = '@Url.Action("SelectedCourses", "Student")';
+    const enrollUrl = '@Url.Action("Enroll", "Student")';
+
+    //State
+    let currentTab = "all";
+
+
+    //Helpers
+
+
+    function getAntiForgeryToken() {
+        const tokenInput = document.querySelector('#antiForgeryForm input[name="__RequestVerificationToken"]');
+        return tokenInput ? tokenInput.value : "";
+    }
+
+    async function loadTab(url) {
+
+        const container = document.getElementById("tabContent");
+
+        container.innerHTML = `<div class="srp-loading">Loading...</div>`;
+
+        const res = await fetch(url, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        });
+
+        // If unauthorized / error
+        if (!res.ok) {
+            container.innerHTML = `<div class="srp-loading text-danger">Failed to load data.</div>`;
+            return;
+        }
+
+        container.innerHTML = await res.text();
+    }
+
+    async function reloadCurrentTab() {
+        if (currentTab === "selected") {
+            await loadTab(selectedCoursesUrl);
+        } else {
+            await loadTab(allCoursesUrl);
+        }
+    }
+
+
+
+    // Tabs
+    const tabAll = document.getElementById("tabAll");
+    const tabSelected = document.getElementById("tabSelected");
+
+    tabAll.addEventListener("click", async () => {
+        currentTab = "all";
+        tabAll.classList.add("active");
+        tabSelected.classList.remove("active");
+        await loadTab(allCoursesUrl);
+    });
+
+    tabSelected.addEventListener("click", async () => {
+        currentTab = "selected";
+        tabSelected.classList.add("active");
+        tabAll.classList.remove("active");
+        await loadTab(selectedCoursesUrl);
+    });
+
+
+
+    // default load
+
+    loadTab(allCoursesUrl);
+
+    // Enroll Modal (called from _AllCourses partial)
+    window.openEnrollModal = function(courseId, courseName) {
+
+
+        const safeName = (courseName || "").toString();
+
+        const html = `
+        <div class="modal fade" id="enrollModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title fw-bold w-100 text-center">Enroll Course</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body px-4 pt-0">
+                        <div class="text-center mb-3">
+                            <div class="fw-semibold" style="font-size:16px;">${safeName}</div>
+                            <div class="text-muted small">Do you want to enroll in this course?</div>
+                        </div>
+
+                        <div id="enrollMsg" class="small text-center" style="min-height:18px;"></div>
+                    </div>
+
+                    <div class="modal-footer justify-content-center gap-2 pb-4">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="button" class="btn btn-primary px-4" id="confirmEnrollBtn">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        document.getElementById("globalModal").innerHTML = html;
+
+        // bind click
+        document.getElementById("confirmEnrollBtn")
+                .addEventListener("click", function(){
+                    enrollCourse(courseId);
+                });
+
+        // show
+        const modalEl = document.getElementById("enrollModal");
+        new bootstrap.Modal(modalEl).show();
+    };
+
+
+
+    // AJAX Enroll
+    async function enrollCourse(courseId) {
+
+        const btn = document.getElementById("confirmEnrollBtn");
+        const msg = document.getElementById("enrollMsg");
+
+        msg.className = "small text-center";
+        msg.innerText = "";
+        btn.disabled = true;
+        btn.innerText = "Enrolling...";
+
+
+        try {
+            const token = getAntiForgeryToken();
+
+            const formData = new FormData();
+            formData.append("courseId", courseId);
+
+            const res = await fetch(enrollUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "RequestVerificationToken": token
+                }
+            });
+
+            if (!res.ok) {
+                msg.classList.add("text-danger");
+                msg.innerText = "Something went wrong. Try again.";
+                btn.disabled = false;
+                btn.innerText = "Confirm";
+                return;
+            }
+
+            const data = await res.json();
+
+            // supports both tuple-json and our json wrapper
+            const success = (data.success ?? data.Success);
+            const message = (data.message ?? data.Message) ?? "";
+
+            if (success) {
+                msg.classList.add("text-success");
+                msg.innerText = message || "Enrollment successful.";
+
+                // Since enroll is coming from All Courses tab mostly:
+                // keep currentTab as "all" (it is) and reload list so selected course disappears
+                await reloadCurrentTab();
+
+                setTimeout(() => {
+                    const modalEl = document.getElementById("enrollModal");
+                    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                    if (modalInstance) modalInstance.hide();
+                }, 700);
+
+            } else {
+                msg.classList.add("text-danger");
+                msg.innerText = message || "Enrollment failed.";
+                btn.disabled = false;
+                btn.innerText = "Confirm";
+            }
+
+        } catch (e) {
+            msg.classList.add("text-danger");
+            msg.innerText = "Server error. Try again.";
+            btn.disabled = false;
+            btn.innerText = "Confirm";
+        }
+    }
+
+
+    window.reloadCurrentTab = reloadCurrentTab;
+
+</script>

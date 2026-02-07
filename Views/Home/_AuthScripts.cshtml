@@ -1,0 +1,107 @@
+﻿
+//TabSwitch JS
+<script>
+    const loginBtnTab = document.getElementById("loginTabBtn");
+    const registerBtnTab = document.getElementById("registerTabBtn");
+    const loginTab = document.getElementById("loginTab");
+    const registerTab = document.getElementById("registerTab");
+
+    loginBtnTab.onclick = () => {
+        loginBtnTab.classList.add("active");
+        registerBtnTab.classList.remove("active");
+        loginTab.classList.remove("d-none");
+        registerTab.classList.add("d-none");
+    };
+
+    registerBtnTab.onclick = () => {
+        registerBtnTab.classList.add("active");
+        loginBtnTab.classList.remove("active");
+        registerTab.classList.remove("d-none");
+        loginTab.classList.add("d-none");
+    };
+</script>
+
+
+
+// LOGIN AJAX
+<script>
+    
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const error = document.getElementById("loginError");
+        const btn = document.getElementById("loginBtn");
+
+        error.innerText = "";
+        btn.disabled = true;
+        btn.innerText = "Logging in...";
+
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            });
+
+            if (!res.ok) {
+                error.innerText = await res.text();
+                return;
+            }
+
+            const data = await res.json();
+            window.location.href = data.redirectUrl;
+
+        } catch {
+            error.innerText = "Server error";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "LOG IN";
+        }
+    });
+</script>
+
+
+
+// REGISTER AJAX
+
+<script>
+
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const error = document.getElementById("registerError");
+        const btn = document.getElementById("registerBtn");
+
+        error.innerText = "";
+        btn.disabled = true;
+        btn.innerText = "Creating account...";
+
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            });
+
+            if (!res.ok) {
+                error.innerText = await res.text();
+                return;
+            }
+
+            const data = await res.json();
+            window.location.href = data.redirectUrl;
+
+        } catch {
+            error.innerText = "Server error";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "SIGN UP";
+        }
+    });
+</script>

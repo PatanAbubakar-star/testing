@@ -1,0 +1,28 @@
+﻿<script>
+
+
+    let deleteCourseId = 0;
+
+    function openDeleteModal(courseId) {
+        deleteCourseId = courseId;
+        new bootstrap.Modal(
+            document.getElementById("deleteModal")
+        ).show();
+    }
+
+    document.getElementById("confirmDeleteBtn").onclick = async () => {
+        const res = await fetch("/Admin/DeleteCourse", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "RequestVerificationToken":
+                    document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: `courseId=${deleteCourseId}`
+        });
+
+        if (res.ok) location.reload();
+    };
+
+
+</script>
